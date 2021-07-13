@@ -28,7 +28,7 @@ Configuration of the munin master needs to be done separately.
 ## Requirements
 
 This role has been tested to run on Debian (from wheezy to bullseye), Ubuntu,
-and CentOS 7 and 8.  It should work on all Debian-derivatives and RedHat-derivatives.
+CentOS 7 and 8, Fedora.  It should work on all Debian-derivatives and RedHat-derivatives.
 
 ## Role variables
 
