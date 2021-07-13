@@ -1,5 +1,5 @@
 galaxy_info:
-  role_name: munin-async
+  role_name: munin_async
   author: Baptiste Jonglez
   description: Install and configure the munin-async monitoring agent
   license: MIT
@@ -22,4 +22,4 @@ galaxy_info:
     - monitoring
     - system
     - munin
-    - munin-async
+    - munin_async
