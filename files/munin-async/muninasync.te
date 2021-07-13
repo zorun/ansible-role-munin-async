@@ -1,0 +1,19 @@
+
+module muninasync 1.0;
+
+require {
+	type init_t;
+	type munin_exec_t;
+	type munin_var_lib_t;
+	type munin_port_t;
+	type munin_t;
+	class process2 nnp_transition;
+	class file { execute ioctl read };
+	class tcp_socket name_connect;
+}
+
+#============= init_t ==============
+allow init_t munin_exec_t:file ioctl;
+allow init_t munin_port_t:tcp_socket name_connect;
+allow init_t munin_t:process2 nnp_transition;
+allow init_t munin_var_lib_t:file read;

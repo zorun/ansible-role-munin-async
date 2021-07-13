@@ -17,6 +17,26 @@
   apt: name=munin-async state=present
   when: ansible_os_family == 'Debian'
 
+# See https://github.com/munin-monitoring/munin/issues/1309
+- name: Copy muninasync selinux policy if in enforcing mode.
+  copy:
+    src: munin-async/muninasync.pp
+    dest: /tmp/muninasync.pp
+  when: "'mode' in ansible_facts.selinux and ansible_facts.selinux.mode == 'enforcing'"
+
+- name: Check if the muninasync selinux policy is already loaded.
+  command:
+    cmd: semodule -l
+  register: semodule_out
+  check_mode: no
+  changed_when: "'muninasync' not in semodule_out.stdout"
+  when: "'mode' in ansible_facts.selinux and ansible_facts.selinux.mode == 'enforcing'"
+
+- name: Load muninasync selinux policy if needed.
+  command:
+    cmd: semodule -i /tmp/muninasync.pp
+  when: "'mode' in ansible_facts.selinux and ansible_facts.selinux.mode == 'enforcing' and 'muninasync' not in semodule_out.stdout"
+
 - name: Create munin-async user on Red Hat and derivatives.
   user:
     name: "{{ munin_async_user }}"
