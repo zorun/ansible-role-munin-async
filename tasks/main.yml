@@ -2,26 +2,29 @@
 - name: Include OS-specific variables.
   include_vars: "{{ ansible_os_family }}.yml"
 
-- name: Ensure munin-async is installed (CentOS 7).
-  yum: name=munin-async state=present enablerepo=epel
-  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == "7"
-
-- name: Ensure munin-async is installed through munin-node (CentOS 8).
+- name: Ensure munin-node is installed because it includes munin-async (Red Hat and derivatives).
   yum: name=munin-node state=present enablerepo=epel
-  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == "8"
+  when: ansible_os_family == 'RedHat'
+
+- name: Make sure that the required munin-async binaries exist (Red Hat and derivatives).
+  file: path={{ item }} state=file
+  with_items:
+    - /usr/share/munin/munin-async
+    - /usr/sbin/munin-asyncd
+  when: ansible_os_family == 'RedHat'
 
 - name: Ensure munin-async is installed (Debian and derivatives).
   apt: name=munin-async state=present
   when: ansible_os_family == 'Debian'
 
-- name: Create munin-async user on CentOS
+- name: Create munin-async user on Red Hat and derivatives.
   user:
     name: "{{ munin_async_user }}"
     system: true
     home: "{{ munin_async_home }}"
   when: ansible_os_family == 'RedHat'
 
-- name: Ensure ~/.ssh/ exists for munin-async user
+- name: Ensure ~/.ssh/ exists for the munin-async user.
   file:
     path: "{{ munin_async_home }}/.ssh/"
     state: directory
@@ -29,14 +32,14 @@
     group: "{{ munin_async_group }}"
     mode: 0700
 
-- name: Add SSH key to munin-async user
+- name: Add SSH key to munin-async user.
   template:
     src: munin-async-authorized_keys.j2
     dest: "{{ munin_async_home }}/.ssh/authorized_keys"
     owner: "{{ munin_async_user }}"
     group: "{{ munin_async_group }}"
     mode: 0600
-  when: munin_async_sshpubkeys
+  when: munin_async_sshpubkeys != []
 
 - name: Ensure munin-async is running.
   service: name={{ munin_async_service }} state=started enabled=yes
