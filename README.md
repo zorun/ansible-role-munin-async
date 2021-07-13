@@ -21,7 +21,7 @@ This role does only two things, but does them well:
 - copy the public SSH key of the munin master so that it can fetch data from this target system
 
 It is recommended to use a separate role to configure munin-node to your liking,
-such as [https://github.com/geerlingguy/ansible-role-munin-node](geerlingguy's munin-node role).
+such as the [munin-node role from geerlingguy](https://github.com/geerlingguy/ansible-role-munin-node).
 
 Configuration of the munin master needs to be done separately.
 
@@ -61,6 +61,7 @@ Apply this playbook to your nodes:
 
     $ ansible-playbook munin-async.yml
 
+This will install and configure `munin-async` with the SSH key of the munin master.
 
 Finally, on your **munin master**, you need to declare each node that needs to be monitored:
 
