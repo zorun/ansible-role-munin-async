@@ -1,0 +1,22 @@
+galaxy_info:
+  role_name: munin-async
+  author: Baptiste Jonglez
+  description: Install and configure the munin-async monitoring agent
+  license: MIT
+  min_ansible_version: 2.3
+  platforms:
+    - name: Debian
+      versions:
+        - all
+    - name: Ubuntu
+      versions:
+        - all
+    - name: EL
+      versions:
+        - 7
+        - 8
+  galaxy_tags:
+    - monitoring
+    - system
+    - munin
+    - munin-async

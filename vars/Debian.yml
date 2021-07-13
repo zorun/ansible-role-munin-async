@@ -1,0 +1,5 @@
+---
+munin_async_service: munin-async
+munin_async_home: /var/lib/munin-async
+munin_async_user: munin-async
+munin_async_group: munin-async
