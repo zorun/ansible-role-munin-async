@@ -1,0 +1,3 @@
+---
+- name: Ensure munin-async is installed (Debian and derivatives).
+  apt: name=munin-async state=present

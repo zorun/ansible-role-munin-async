@@ -2,47 +2,17 @@
 - name: Include OS-specific variables.
   include_vars: "{{ ansible_os_family }}.yml"
 
-- name: Ensure munin-node is installed because it includes munin-async (Red Hat and derivatives).
-  yum: name=munin-node state=present enablerepo=epel
+- name: Include SELinux configuration if necessary.
+  include_tasks: selinux.yml
+  when: "'mode' in ansible_facts.selinux and ansible_facts.selinux.mode == 'enforcing'"
+
+- name: Include Red-Hat based installation steps.
+  include_tasks: install-redhat.yml
   when: ansible_os_family == 'RedHat'
 
-- name: Make sure that the required munin-async binaries exist (Red Hat and derivatives).
-  file: path={{ item }} state=file
-  with_items:
-    - /usr/share/munin/munin-async
-    - /usr/sbin/munin-asyncd
-  when: ansible_os_family == 'RedHat'
-
-- name: Ensure munin-async is installed (Debian and derivatives).
-  apt: name=munin-async state=present
+- name: Include Debian based installation steps.
+  include_tasks: install-debian.yml
   when: ansible_os_family == 'Debian'
-
-# See https://github.com/munin-monitoring/munin/issues/1309
-- name: Copy muninasync selinux policy if in enforcing mode.
-  copy:
-    src: munin-async/muninasync.pp
-    dest: /tmp/muninasync.pp
-  when: "'mode' in ansible_facts.selinux and ansible_facts.selinux.mode == 'enforcing'"
-
-- name: Check if the muninasync selinux policy is already loaded.
-  command:
-    cmd: semodule -l
-  register: semodule_out
-  check_mode: no
-  changed_when: "'muninasync' not in semodule_out.stdout"
-  when: "'mode' in ansible_facts.selinux and ansible_facts.selinux.mode == 'enforcing'"
-
-- name: Load muninasync selinux policy if needed.
-  command:
-    cmd: semodule -i /tmp/muninasync.pp
-  when: "'mode' in ansible_facts.selinux and ansible_facts.selinux.mode == 'enforcing' and 'muninasync' not in semodule_out.stdout"
-
-- name: Create munin-async user on Red Hat and derivatives.
-  user:
-    name: "{{ munin_async_user }}"
-    system: true
-    home: "{{ munin_async_home }}"
-  when: ansible_os_family == 'RedHat'
 
 - name: Ensure ~/.ssh/ exists for the munin-async user.
   file:
