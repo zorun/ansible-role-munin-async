@@ -18,6 +18,9 @@ galaxy_info:
       versions:
         - 7
         - 8
+    - name: OpenBSD
+      versions:
+        - all
   galaxy_tags:
     - monitoring
     - system
