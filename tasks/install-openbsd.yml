@@ -1,6 +1,6 @@
 ---
 - name: Ensure munin-node is installed because it includes munin-async (OpenBSD).
-  community.general.openbsd_pkg: name=munin-node state=present
+  openbsd_pkg: name=munin-node state=present
 
 - name: Create munin-async user on OpenBSD.
   user:
