@@ -83,9 +83,9 @@ For example:
 ```
 munin_async_service: munin-asyncd
 munin_async_clientbin: /usr/share/munin/munin-async
-munin_async_home: /var/lib/munin-async
 munin_async_user: munin-async
 munin_async_group: munin-async
+munin_async_home: /var/lib/munin-async
 ```
 
 These variables should match the munin-async package for the OS where applicable.
