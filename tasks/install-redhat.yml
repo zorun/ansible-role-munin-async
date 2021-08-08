@@ -2,12 +2,6 @@
 - name: Ensure munin-node is installed because it includes munin-async (Red Hat and derivatives).
   yum: name=munin-node state=present enablerepo=epel
 
-- name: Make sure that the required munin-async binaries exist (Red Hat and derivatives).
-  file: path={{ item }} state=file
-  with_items:
-    - /usr/share/munin/munin-async
-    - /usr/sbin/munin-asyncd
-
 - name: Create munin-async user on Red Hat and derivatives.
   user:
     name: "{{ munin_async_user }}"
