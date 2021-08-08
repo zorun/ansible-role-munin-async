@@ -1,0 +1,6 @@
+---
+munin_async_service: munin_asyncd
+munin_async_clientbin: /usr/local/libexec/munin/munin-async
+munin_async_user: munin-async
+munin_async_group: munin-async
+munin_async_home: /var/munin-async

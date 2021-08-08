@@ -14,6 +14,10 @@
   include_tasks: install-debian.yml
   when: ansible_os_family == 'Debian'
 
+- name: Include OpenBSD installation steps.
+  include_tasks: install-openbsd.yml
+  when: ansible_os_family == 'OpenBSD'
+
 - name: Test that the munin-async client binary exists.
   file: path={{ munin_async_clientbin }} state=file
 
