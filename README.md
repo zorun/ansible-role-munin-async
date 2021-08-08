@@ -72,6 +72,36 @@ Finally, on your **munin master**, you need to declare each node that needs to b
 
 Of course, you could write a simple role/playbook to manage that through ansible as well.
 
+## Hacking
+
+### Adding support for an OS
+
+To add support for a new OS, the first step is to add variables in
+`vars/OSFAMILY.yml` where `OSFAMILY` is what ansible reports as `ansible_os_family`.
+For example:
+
+```
+munin_async_service: munin-asyncd
+munin_async_clientbin: /usr/share/munin/munin-async
+munin_async_home: /var/lib/munin-async
+munin_async_user: munin-async
+munin_async_group: munin-async
+```
+
+These variables should match the munin-async package for the OS where applicable.
+
+If no user is created by the package, the username and home can be chosen arbitrarily.
+It is recommended to use `munin-async` for consistency (to help configure the munin master
+in an uniform way).  This user should have read access to the munin-async data, e.g.
+`/var/lib/munin-async/` on Debian or `/var/lib/munin/spool/` on Red-Hat systems.
+
+Then, add a file `tasks/install-YOUROS.yml` that should:
+
+- install an appropriate munin-async package (or even install it manually)
+- if necessary, create a user named `{{ munin_async_user }}` with home directory `{{ munin_async_home }}`
+- if necessary, create a service named `{{ munin_async_service }}` to start/stop the daemon
+
+Lastly, include this file in the main tasks file with the right conditional.
 
 ## License
 
