@@ -25,6 +25,10 @@ such as the [munin-node role from geerlingguy](https://github.com/geerlingguy/an
 
 Configuration of the munin master needs to be done separately.
 
+## Installation
+
+This role is available on [Ansible Galaxy](https://galaxy.ansible.com/zorun/munin_async)
+
 ## Requirements
 
 This role has been tested to run on Debian (from wheezy to bullseye), Ubuntu,
